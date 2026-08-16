@@ -23,9 +23,10 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files
 .env*
 !.env.example
+!.env.local.example
 
 # typescript
 /dist/
@@ -36,3 +37,12 @@ yarn-error.log*
 # generated local caches
 __pycache__/
 *.pyc
+
+# Dataset oficial RAW: mantener solo de forma local, nunca subirlo al repo público.
+/backend/data/raw/*
+!/backend/data/raw/README.md
+!/backend/data/raw/.gitkeep
+
+# Resúmenes procesados locales generados desde el dataset oficial.
+/backend/data/processed/*
+!/backend/data/processed/.gitkeep
