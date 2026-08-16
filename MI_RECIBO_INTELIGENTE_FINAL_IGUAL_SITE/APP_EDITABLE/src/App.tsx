@@ -19,7 +19,7 @@ import { askLucia } from "@/src/services/luciaService";
 import { offerConfirmation } from "@/src/services/offerService";
 import type { MainSection, Receipt, ReceiptView } from "@/src/types/billing";
 import type { CallCenterState, WhatsAppState } from "@/src/types/case";
-import type { ChatMessage, Resolution } from "@/src/types/lucia";
+import type { ChatMessage, Intent, Resolution } from "@/src/types/lucia";
 import type { OfferStatus } from "@/src/types/offer";
 
 const scenarioQuestion: Record<string, string> = {
@@ -28,6 +28,8 @@ const scenarioQuestion: Record<string, string> = {
   reconexion: "¿Por qué me cobraron reconexión?",
   descuento: "¿Por qué terminó mi descuento?",
 };
+
+const billingIntents = new Set<Intent>(["increase", "breakdown", "proration", "reconnection", "discount", "payment", "receipt_month"]);
 
 export default function App() {
   const [section, setSection] = useState<MainSection>("inicio");
@@ -40,16 +42,15 @@ export default function App() {
   const [handoff, setHandoff] = useState(false);
   const [resolution, setResolution] = useState<Resolution>("pending");
   const [billingPending, setBillingPending] = useState(false);
-  const [showResolutionPrompt, setShowResolutionPrompt] = useState(false);
   const [offerStatus, setOfferStatus] = useState<OfferStatus>("locked");
   const [whatsappState, setWhatsappState] = useState<WhatsAppState>("idle");
   const [whatsappMessage, setWhatsappMessage] = useState("");
   const [callCenterState, setCallCenterState] = useState<CallCenterState>("idle");
   const [callCenterMessage, setCallCenterMessage] = useState("");
-  const [messages, setMessages] = useState<ChatMessage[]>([{ role: "bot", text: `Hola, soy LucIA. Estoy revisando tu caso de ${scenario.label.toLowerCase()}. Pregúntame como hablarías normalmente; usaré únicamente la evidencia disponible.`, source: `Caso demo ${scenario.label} · ${scenario.analysis.evidence_status}` }]);
+  const [messages, setMessages] = useState<ChatMessage[]>([{ role: "bot", text: "Hola, soy LucIA 😊. Cuéntame qué quieres revisar de tu recibo. Puedes escribirme normal, con abreviaciones o como te salga.", source: `Caso demo ${scenario.label} · ${scenario.analysis.evidence_status}` }]);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  const quickQuestions = useMemo(() => [scenarioQuestion[activeScenarioId], "¿Por qué cambió mi recibo?", "¿Cuántos gigas me quedan?", "¿Qué beneficios tengo?"], []);
+  const quickQuestions = useMemo(() => [scenarioQuestion[activeScenarioId], "¿Cuánto pagué el mes pasado?", "¿Cuántos gigas me quedan?", "¿Qué beneficios tengo?"], []);
   const usedPercent = Math.round((currentReceipt.usage / customer.planData) * 100);
   const remaining = customer.planData - currentReceipt.usage;
   const average = currentReceipt.usage / dailyUsage.length;
@@ -57,7 +58,7 @@ export default function App() {
   const advisorMode = useMemo(() => new URLSearchParams(window.location.search).get("modo") === "asesor", []);
 
   useEffect(() => { window.scrollTo({ top: 0 }); }, [section, receiptView]);
-  useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, asking, handoff, showResolutionPrompt, offerStatus]);
+  useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, asking, handoff, offerStatus]);
 
   const visiblePage = useMemo(() => {
     if (section === "inicio") return <Inicio onReceipt={() => navigate("recibo")} onBenefits={() => navigate("beneficios")} onStore={() => navigate("tienda")} />;
@@ -79,7 +80,6 @@ export default function App() {
     if (!clean || asking) return;
     const historyBeforeQuestion = messages;
     setQuestion("");
-    setShowResolutionPrompt(false);
     setHandoff(false);
     setOfferStatus("locked");
     setMessages((current) => [...current, { role: "user", text: clean }]);
@@ -87,17 +87,21 @@ export default function App() {
     try {
       const rawResult = await askLucia(clean, historyBeforeQuestion);
       const result = rawResult.showOffer && billingPending
-        ? { ...rawResult, showOffer: false, answer: "Sí tengo una opción para tu línea, pero primero terminemos de aclarar el cobro actual. Cuando confirmes que quedó claro, pídeme la oferta y te la muestro.", source: "Regla comercial: problema pendiente → no oferta" }
+        ? { ...rawResult, showOffer: false, answer: "Sí tengo opciones para tu línea, pero todavía estamos revisando el cobro. Cuando me digas que ya quedó claro, pídeme la oferta y te la muestro.", source: "Regla comercial: primero resolver, luego ofrecer" }
         : rawResult;
+
       setMessages((current) => [...current, { role: "bot", text: result.answer, source: result.source, suggestHuman: result.suggestHuman }]);
-      setShowResolutionPrompt(result.needsResolutionCheck);
-      if (result.needsResolutionCheck) {
-        setResolution("pending");
+
+      if (billingIntents.has(result.intent)) {
         setBillingPending(true);
+        setResolution("pending");
+      }
+      if (result.intent === "resolved") {
+        setBillingPending(false);
+        setResolution("resolved");
       }
       if (result.suggestHuman) {
         setResolution("needs-help");
-        setBillingPending(false);
         setHandoff(true);
       }
       if (result.showOffer && !billingPending) setOfferStatus("available");
@@ -109,19 +113,16 @@ export default function App() {
   function markResolved() {
     setResolution("resolved");
     setBillingPending(false);
-    setShowResolutionPrompt(false);
     setHandoff(false);
     setOfferStatus("locked");
-    setMessages((current) => [...current, { role: "bot", text: `Perfecto. Recuerda que tu plan ya incluye ${benefits.join(", ").toLowerCase()}. Si quieres revisar una oferta o mejorar tu plan, pídemelo y te mostraré una opción acorde a este caso.`, source: "Beneficios vigentes · oferta solo a pedido" }]);
+    setMessages((current) => [...current, { role: "bot", text: `Listo 👍. Si quieres revisar algo más, dime nomás. También puedo ver consumo, beneficios o planes cuando tú me lo pidas.`, source: `Beneficios vigentes: ${benefits.join(" · ")}` }]);
   }
 
   function askForHuman() {
     setResolution("needs-help");
-    setBillingPending(false);
-    setShowResolutionPrompt(false);
     setOfferStatus("locked");
     setHandoff(true);
-    setMessages((current) => [...current, { role: "bot", text: "De acuerdo. Preparé el contexto del recibo y la conversación para que un asesor pueda continuar sin que repitas todo.", source: "Resumen de derivación" }]);
+    setMessages((current) => [...current, { role: "bot", text: "Claro. Voy a preparar el contexto para un asesor para que no tengas que repetir todo desde cero.", source: "Derivación solicitada por el cliente" }]);
   }
 
   async function prepareHandoff() {
@@ -152,7 +153,7 @@ export default function App() {
       {visiblePage}
       {section === "recibo" && !showChat && <LuciaFloatingButton onClick={() => setShowChat(true)} />}
       <BottomNavigation active={section} onChange={navigate} />
-      {showChat && <LuciaChat messages={messages} asking={asking} question={question} questions={quickQuestions} showFeedback={showResolutionPrompt} offerStatus={offerStatus} offer={offer} handoff={handoff} whatsappState={whatsappState} whatsappMessage={whatsappMessage} callCenterState={callCenterState} callCenterMessage={callCenterMessage} endRef={chatEndRef} onClose={() => setShowChat(false)} onQuestion={setQuestion} onSubmit={submitQuestion} onAsk={(value) => void ask(value)} onResolved={markResolved} onHuman={askForHuman} onAcceptOffer={acceptOffer} onDeclineOffer={() => setOfferStatus("declined")} onSendHandoff={() => void prepareHandoff()} onRequestCallback={() => void prepareCallback()} />}
+      {showChat && <LuciaChat messages={messages} asking={asking} question={question} questions={quickQuestions} showFeedback={false} offerStatus={offerStatus} offer={offer} handoff={handoff} whatsappState={whatsappState} whatsappMessage={whatsappMessage} callCenterState={callCenterState} callCenterMessage={callCenterMessage} endRef={chatEndRef} onClose={() => setShowChat(false)} onQuestion={setQuestion} onSubmit={submitQuestion} onAsk={(value) => void ask(value)} onResolved={markResolved} onHuman={askForHuman} onAcceptOffer={acceptOffer} onDeclineOffer={() => setOfferStatus("declined")} onSendHandoff={() => void prepareHandoff()} onRequestCallback={() => void prepareCallback()} />}
       {selectedReceipt && <ReceiptModal receipt={selectedReceipt} close={() => setSelectedReceipt(null)} />}
     </Layout>
   );
