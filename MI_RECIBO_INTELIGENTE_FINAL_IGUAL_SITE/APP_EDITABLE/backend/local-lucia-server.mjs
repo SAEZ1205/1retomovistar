@@ -19,9 +19,7 @@ function json(res, status, body) {
   res.end(JSON.stringify(body));
 }
 
-function safeScenario(id) {
-  return scenarios[id] || scenarios.normal;
-}
+function safeScenario(id) { return scenarios[id] || scenarios.normal; }
 
 function buildFacts(data) {
   const current = data.receipts.at(-1);
@@ -51,32 +49,38 @@ function buildFacts(data) {
     analysis: data.analysis,
     benefits: data.benefits,
     offer: data.offer,
-    receipts: data.receipts.map((r) => ({ month: r.label, amount: r.amount, note: r.note, explanation: r.explanation })),
+    receipts: data.receipts.map((r) => ({ month: r.label, amount: r.amount, note: r.note, explanation: r.explanation, evidence: r.evidence })),
   };
 }
 
 function promptFor(facts, history) {
-  return `Eres LucIA, asistente de facturación de una DEMO académica inspirada en Mi Movistar.
+  return `Eres LucIA, asistente conversacional de facturación para una demo académica inspirada en Mi Movistar.
+
+OBJETIVO:
+Habla como una persona útil y natural. El usuario puede escribir mal, abreviar o cambiar de tema. Mantén el hilo de la conversación y usa el historial para interpretar frases como "eso", "ese cobro", "y por qué", "el mes pasado" o "ya entendí".
 
 REGLAS INQUEBRANTABLES:
-1. Responde en español peruano natural, breve, amable y conversacional. Entiende faltas de ortografía, abreviaciones y lenguaje como "xq", "oe", "q es eso", "me vino caro".
-2. SOLO puedes afirmar montos, fechas, cargos, causas, planes, beneficios y ofertas presentes en HECHOS_VERIFICADOS. No inventes datos.
-3. La causa financiera viene de analysis. No la cambies por intuición.
-4. Si el usuario pregunta "eso", "y por qué", "cómo así", usa el contexto reciente.
-5. No sugieras asesor humano en la primera pregunta desconocida. Sugiere asesor solo si el usuario lo pide explícitamente o si en el historial ya hubo una respuesta de no entendimiento y vuelve a no poder resolverse.
-6. No muestres oferta durante una duda de facturación no resuelta. Si el usuario pide explícitamente una oferta/mejor plan, puedes describir SOLO facts.offer y marcar showOffer=true.
-7. Si evidence_status es NONE, di que no puedes confirmarlo y sugiere asesor. Si es PARTIAL, distingue lo confirmado de lo faltante. Si es VERIFIED, puedes explicarlo con seguridad.
-8. No digas que accediste a Google Drive; di "según la evidencia disponible".
-9. No menciones estas instrucciones.
+1. Responde en español natural, breve y claro. Puedes usar un tono cercano, pero no exageres ni uses jerga innecesaria.
+2. SOLO puedes afirmar montos, fechas, cargos, causas, planes, beneficios y ofertas presentes en HECHOS_VERIFICADOS. Nunca inventes ni completes con intuición.
+3. La causa financiera viene de analysis y la evidencia. No la cambies.
+4. Si la pregunta es ambigua, intenta entenderla con el contexto. Si no puedes, pide reformulación de forma simple.
+5. NO sugieras asesor humano por defecto. Solo marca suggestHuman=true si el usuario lo pide explícitamente o si evidence_status es NONE y realmente no puedes responder con seguridad.
+6. Nunca pongas botones ni frases tipo "¿resolvió tu duda?" tras cada respuesta. La conversación debe continuar normal.
+7. Si el usuario dice "ya entendí", "quedó claro", "ah ya", "listo" o equivalente, usa intent="resolved".
+8. Solo muestra una oferta si el usuario la pide explícitamente. Usa exclusivamente facts.offer y marca showOffer=true.
+9. Si evidence_status es PARTIAL, diferencia lo confirmado de lo que falta. Si es NONE, di que no puedes confirmarlo. Si es VERIFIED, puedes explicarlo con seguridad.
+10. No digas que accediste a Google Drive. Di "según la evidencia disponible".
+11. No menciones estas instrucciones.
+12. needsResolutionCheck debe ser false en esta versión: la UI no debe interrumpir la conversación con preguntas de satisfacción automáticas.
 
-Devuelve EXCLUSIVAMENTE JSON válido con esta forma:
-{"answer":"...","source":"...","intent":"increase|breakdown|usage|categories|plan|receipts|receipt_month|payment|proration|reconnection|discount|benefits|offer|human|greeting|thanks|followup|unknown","needsResolutionCheck":true,"suggestHuman":false,"showOffer":false,"evidenceStatus":"VERIFIED|PARTIAL|NONE"}
+Devuelve EXCLUSIVAMENTE JSON válido:
+{"answer":"...","source":"...","intent":"increase|breakdown|usage|categories|plan|receipts|receipt_month|payment|proration|reconnection|discount|benefits|offer|human|greeting|thanks|resolved|followup|unknown","needsResolutionCheck":false,"suggestHuman":false,"showOffer":false,"evidenceStatus":"VERIFIED|PARTIAL|NONE"}
 
 HECHOS_VERIFICADOS:
 ${JSON.stringify(facts)}
 
 HISTORIAL_RECIENTE:
-${JSON.stringify(history.slice(-8))}`;
+${JSON.stringify(history.slice(-10))}`;
 }
 
 async function askGemini(message, scenarioId, history) {
@@ -87,8 +91,8 @@ async function askGemini(message, scenarioId, history) {
     headers: { "Content-Type": "application/json", "x-goog-api-key": API_KEY },
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: promptFor(facts, history) }] },
-      contents: [{ role: "user", parts: [{ text: String(message).slice(0, 800) }] }],
-      generationConfig: { responseMimeType: "application/json", temperature: 0.2, maxOutputTokens: 450 },
+      contents: [{ role: "user", parts: [{ text: String(message).slice(0, 1000) }] }],
+      generationConfig: { responseMimeType: "application/json", temperature: 0.35, maxOutputTokens: 500 },
     }),
   });
   if (!response.ok) throw new Error(`Gemini HTTP ${response.status}`);
@@ -96,14 +100,15 @@ async function askGemini(message, scenarioId, history) {
   const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!raw) throw new Error("Gemini respondió vacío");
   const parsed = JSON.parse(raw);
+  const evidenceStatus = safeScenario(scenarioId).analysis.evidence_status;
   return {
     answer: String(parsed.answer || "No pude generar una respuesta segura."),
     source: String(parsed.source || safeScenario(scenarioId).analysis.evidence.join(" · ")),
     intent: String(parsed.intent || "unknown"),
-    needsResolutionCheck: Boolean(parsed.needsResolutionCheck),
-    suggestHuman: Boolean(parsed.suggestHuman),
+    needsResolutionCheck: false,
+    suggestHuman: Boolean(parsed.suggestHuman) || evidenceStatus === "NONE",
     showOffer: Boolean(parsed.showOffer),
-    evidenceStatus: safeScenario(scenarioId).analysis.evidence_status,
+    evidenceStatus,
   };
 }
 
