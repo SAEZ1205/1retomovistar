@@ -21,3 +21,14 @@ jobs:
           cache-dependency-path: MI_RECIBO_INTELIGENTE_FINAL_IGUAL_SITE/APP_EDITABLE/package-lock.json
       - run: npm ci
       - run: npm run build
+      - name: Prepare local ZIP
+        run: |
+          rm -f ../../MI_RECIBO_INTELIGENTE_LOCAL_EDITABLE.zip
+          zip -r ../../MI_RECIBO_INTELIGENTE_LOCAL_EDITABLE.zip . \
+            -x 'node_modules/*' '.env' '.env.local' '*.log'
+      - name: Upload local ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: MI_RECIBO_INTELIGENTE_LOCAL_EDITABLE
+          path: MI_RECIBO_INTELIGENTE_LOCAL_EDITABLE.zip
+          if-no-files-found: error
