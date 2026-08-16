@@ -1,0 +1,1 @@
+Vista previa React editable. Esta rama compila APP_EDITABLE y no modifica producción.
