@@ -28,5 +28,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: LUCIA_DATASET_DEMO_LOCAL
-          path: MI_RECIBO_INTELIGENTE_FINAL_IGUAL_SITE/LUCIA_DATASET_DEMO_LOCAL.zip
+          path: LUCIA_DATASET_DEMO_LOCAL.zip
           if-no-files-found: error
