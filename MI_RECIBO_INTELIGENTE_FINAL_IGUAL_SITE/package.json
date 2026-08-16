@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "node server.mjs",
     "start": "node server.mjs",
-    "build": "node scripts/build-static.mjs"
+    "build": "node scripts/build-editable-preview.mjs"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22.13.0"
   }
 }
