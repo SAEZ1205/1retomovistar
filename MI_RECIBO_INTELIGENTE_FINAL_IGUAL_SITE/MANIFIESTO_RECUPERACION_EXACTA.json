@@ -1,0 +1,254 @@
+{
+  "source_public_url": "https://mi-recibo-inteligente.saez123m.chatgpt.site/",
+  "capture_basis": "HAR supplied by user",
+  "critical_files": {
+    "index.html": {
+      "mime": "text/html",
+      "status": 200,
+      "bytes": 669,
+      "sha256": "73fbc9568ec67cd94422c89a739b3af8937451b7aea558b231862227bfd2a30c"
+    },
+    "assets/index-CfBV2SCI.js": {
+      "mime": "text/javascript",
+      "status": 304,
+      "bytes": 294519,
+      "sha256": "12a008a9b271571e01fb47a9d24b94a5bad6f51080f003a95bc58740b19ee1b2"
+    },
+    "assets/index-eCgd0yV6.css": {
+      "mime": "text/css",
+      "status": 304,
+      "bytes": 108539,
+      "sha256": "02579ddb0bb49745ef13c9006330777dd7f4dffd011bcc69f5bf35b6974abedf"
+    }
+  },
+  "application_resources": {
+    "/promos/inicio-jammin.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 646263,
+      "sha256": "bb9a2aa1f4d8beb8af4071f611554e43b4b185a3f20dd8cfa3fa1081a1c7e0a2"
+    },
+    "/promos/inicio-xiaomi.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 653047,
+      "sha256": "a2055beadca4279253f56aa401d838f5510858c02e403d26f5dc09dec782ae24"
+    },
+    "/promos/inicio-postpago.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 658370,
+      "sha256": "64c304800ade799d82192aa33ecff30f2c570afba93533c1d53e6be3334aea02"
+    },
+    "/promos/inicio-cambiate.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 679660,
+      "sha256": "01796da2a4ab001ab040715d66d276139fc4b3eb779131b196194626b384654c"
+    },
+    "/favicon.svg": {
+      "mime": "image/svg+xml",
+      "status": 304,
+      "bytes": 712,
+      "sha256": "e6d2e59b7b5bbb0342e0fb496dfc262decbfe4426bbb7b047aec8d467d1dc6f7"
+    },
+    "/lucia/lucia-peek.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 90529,
+      "sha256": "14db2e4e20f104b5b160f24a484abcb0fdee60505644b8dbca855302738b56c0"
+    },
+    "/lucia/lucia-point-transparent.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 100024,
+      "sha256": "924030865536225f2ca714bdf3410c4af88a560233e727aabcdbe5add25f2ed5"
+    },
+    "/lucia/lucia-idea-transparent.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 103382,
+      "sha256": "6af4a6098d0f6ececec76ecaecf3608d374396f4b283006901e3f2053a988822"
+    },
+    "/tienda/tienda-reference.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 519075,
+      "sha256": "c1a0a463d0f990bef1eb440fb3da3a3af9438e3df5713cbe62007bf38b9b998c"
+    },
+    "/support/support-reference.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 408239,
+      "sha256": "4e3dbf3961cfde2084318b56df01ae7f7376d231b166112fa875d7551b2643e2"
+    },
+    "/beneficios/gold-top.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 600332,
+      "sha256": "d40562525759bbadac71c81f0efec200a1d5740f426b7cee8b0dd34d0556654d"
+    },
+    "/beneficios/gold-bottom.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 336410,
+      "sha256": "5f802b15f16206fc9a7e5c04bf2a9b87f796e3e384922d5c300f5286e82dd3b9"
+    },
+    "/beneficios/blue.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 588365,
+      "sha256": "8313ecaabb0b15ae62b9dd7cb752a3473488245a1533fdad82a612e887d2a11b"
+    },
+    "/beneficios/platinum-top.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 620040,
+      "sha256": "8631127441d70e97714c33c06d5ea90256480dcbc749c47ddf8abf128fc700f3"
+    },
+    "/beneficios/platinum-bottom.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 645844,
+      "sha256": "e6c8d0e4e0d12f1ed6c930b6effbd029d6e8941465ce68080af3c2f5ff86e926"
+    },
+    "/beneficios/black-top.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 589334,
+      "sha256": "08d061140f732ccb1e71845fd7b5266f4a36e3fba6191cf5860166413db1bfc8"
+    },
+    "/beneficios/black-bottom.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 517700,
+      "sha256": "68ae2f34c590ed6036c2c61bea34399e536fee6604b03d9548455d0b143bd460"
+    },
+    "/lucia/lucia-phone-cutout-v2.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 1540423,
+      "sha256": "b4d487362f5699eb2617fc7e7ee9433f9c37af91500c526c592fa21059032871"
+    },
+    "/lucia/lucia-academy-pointer.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 113943,
+      "sha256": "9df7eaf826f534bee636f217c5dd26def97f61d1434b3e5f2b478bef891a237b"
+    },
+    "/lucia/lucia-academy-idea.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 134690,
+      "sha256": "7593725f3d389827031f44ad3fd3d1c07815cdd14f2042a595e50ba3e61ab11f"
+    },
+    "/lucia/lucia-academy-book.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 116271,
+      "sha256": "0460c480cf0bb3348eef4806dfd550e9d7aaf0043966fae3808805c2d954f4cb"
+    },
+    "/lucia/lucia-academy-thumbs.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 108111,
+      "sha256": "fbcfbc9e5677bb214e2b1138323a31c16a60343dee9b3cfb8504929aafba0b59"
+    },
+    "/lucia/lucia-chat-wave.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 103429,
+      "sha256": "97832ecafe49a05d293a317e3c2b76816d55a512c542ab9a9c257394af6eb818"
+    },
+    "/lucia/lucia-heart-transparent.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 80782,
+      "sha256": "a7da4c8bf0c5fd48d2d48098f5f508a37aeecd85531b3d8906efd5433fa5d8b0"
+    },
+    "/lucia/lucia-thumbs-transparent.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 85116,
+      "sha256": "675cb827e5edcfacbcfec8e9bccc5fca5946624bbd4eeadb29ae9f786f35efdc"
+    },
+    "/": {
+      "mime": "text/html",
+      "status": 200,
+      "bytes": 669,
+      "sha256": "73fbc9568ec67cd94422c89a739b3af8937451b7aea558b231862227bfd2a30c"
+    },
+    "/assets/index-CfBV2SCI.js": {
+      "mime": "text/javascript",
+      "status": 304,
+      "bytes": 294519,
+      "sha256": "12a008a9b271571e01fb47a9d24b94a5bad6f51080f003a95bc58740b19ee1b2"
+    },
+    "/assets/index-eCgd0yV6.css": {
+      "mime": "text/css",
+      "status": 304,
+      "bytes": 108539,
+      "sha256": "02579ddb0bb49745ef13c9006330777dd7f4dffd011bcc69f5bf35b6974abedf"
+    },
+    "/promos/pago-dia.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 542953,
+      "sha256": "9aba524314ce4fdf04104d806d54bfb8887e36d930ac87b3964ea1d17128f223"
+    },
+    "/promos/plan-l1max.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 561121,
+      "sha256": "751864c304ed4c445cba80c9e20cfbfe4ec5632a161b100341b11500791fc935"
+    },
+    "/promos/plan-30gb.png": {
+      "mime": "image/png",
+      "status": 304,
+      "bytes": 537001,
+      "sha256": "7ba00e16600dc676599eab6b221a6e2cd3899cf09eecdb9fa32f4095ac5275ac"
+    },
+    "/recibos/recibo-marzo-2026.pdf": {
+      "mime": "application/pdf",
+      "status": 304,
+      "bytes": 348,
+      "sha256": "d632f2c913a9c4b6463e379ebf60d2001e106a778db08f00d185515355995ad6"
+    },
+    "/recibos/recibo-abril-2026.pdf": {
+      "mime": "application/pdf",
+      "status": 304,
+      "bytes": 348,
+      "sha256": "808019f19e6bc98616d6e3d6bf8269ad689535d6f69c84c7371d2ed7fc246705"
+    },
+    "/recibos/recibo-mayo-2026.pdf": {
+      "mime": "application/pdf",
+      "status": 304,
+      "bytes": 348,
+      "sha256": "962effa7ef4a23f8c6ed4c61eb9e48f6445d0a614a2a9d73a807b6c639dd111c"
+    },
+    "/recibos/recibo-junio-2026.pdf": {
+      "mime": "application/pdf",
+      "status": 304,
+      "bytes": 348,
+      "sha256": "152c798f95e97c09e5c7a8a66e14d96a5366f2759195a88f77727cd6530b75e2"
+    },
+    "/recibos/recibo-julio-2026.pdf": {
+      "mime": "application/pdf",
+      "status": 304,
+      "bytes": 348,
+      "sha256": "a6c8e3f62f8d8e6c113b6b36ce4fecf709a9c6df5cb306aca8236a0019e5af64"
+    },
+    "/recibos/recibo-agosto-2026.pdf": {
+      "mime": "application/pdf",
+      "status": 200,
+      "bytes": 348,
+      "sha256": "a92a33a265eef392e5b2596560468e5d387d949d57066aaa65a6820c2be6b6e8"
+    }
+  },
+  "notes": [
+    "The deployed frontend files were extracted directly from the HAR response bodies.",
+    "No reverse proxy is used.",
+    "No request to chatgpt.site is required by the packaged frontend.",
+    "The previous source ZIP is preserved separately as a backup and is not used at runtime."
+  ]
+}

@@ -1,0 +1,5 @@
+import type { HandoffCase } from "@/src/types/case";
+
+export default function EvidencePanel({ item }: { item: HandoffCase }) {
+  return <div className="advisor-detail-grid"><section className="advisor-evidence"><small>RESUMEN PARA EL ASESOR</small><h2>Lo importante antes de atender</h2><dl><div><dt>Motivo de derivación</dt><dd>{item.reason}</dd></div><div><dt>Recibo</dt><dd>{item.billingContext.invoiceNumber}</dd></div><div><dt>Ciclo</dt><dd>{item.billingContext.billingCycle}</dd></div><div><dt>Preferencia</dt><dd>{item.contactPreference === "callback" ? "Llamada solicitada" : "Atención digital"}</dd></div></dl><h3>Evidencia encontrada</h3><ul>{item.evidence.map((source) => <li key={source}>✓ {source}</li>)}</ul><p className="advisor-sources">Fuentes: {item.billingContext.dataSources.join(" · ")}</p></section><section className="advisor-conversation"><small>CONVERSACIÓN PREVIA</small><h2>El cliente no tendrá que repetir esto</h2>{item.conversation.map((message, index) => <p className={message.role} key={index}><strong>{message.role === "user" ? "Cliente" : "LucIA"}</strong><span>{message.text}</span></p>)}</section></div>;
+}

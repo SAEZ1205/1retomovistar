@@ -1,0 +1,14 @@
+{
+  "name": "mi-recibo-inteligente-final-rescatado",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs",
+    "build": "node scripts/build-static.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
