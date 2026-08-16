@@ -21,3 +21,12 @@ jobs:
           cache-dependency-path: MI_RECIBO_INTELIGENTE_FINAL_IGUAL_SITE/FUENTE_BASE_ANTIGUA_NO_USADA_EN_LA_DEMO/package-lock.json
       - run: npm ci
       - run: npm run build
+      - name: Package local demo
+        run: |
+          zip -r ../../LUCIA_DATASET_DEMO_LOCAL.zip . -x 'node_modules/*' 'dist/*' '.env.local' '.env' '*.log'
+      - name: Upload local demo ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: LUCIA_DATASET_DEMO_LOCAL
+          path: MI_RECIBO_INTELIGENTE_FINAL_IGUAL_SITE/LUCIA_DATASET_DEMO_LOCAL.zip
+          if-no-files-found: error
