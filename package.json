@@ -1,0 +1,10 @@
+{
+  "name": "movistar-reto1-lucia-checkpoint20",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Checkpoint 20 reconstruido - Entiende tu recibo con LucIA",
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs"
+  }
+}

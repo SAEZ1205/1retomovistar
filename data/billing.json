@@ -1,0 +1,24 @@
+{
+  "customer": {"name":"María Fernanda","line":"987 654 321","plan":"Plan Móvil 40 GB"},
+  "months": [
+    {"month":"Marzo","amount":59.90,"slug":"marzo-2026","status":"Pagado"},
+    {"month":"Abril","amount":59.90,"slug":"abril-2026","status":"Pagado"},
+    {"month":"Mayo","amount":62.40,"slug":"mayo-2026","status":"Pagado"},
+    {"month":"Junio","amount":59.90,"slug":"junio-2026","status":"Pagado"},
+    {"month":"Julio","amount":59.90,"slug":"julio-2026","status":"Pagado"},
+    {"month":"Agosto","amount":62.40,"slug":"agosto-2026","status":"Pendiente"}
+  ],
+  "analysis": {
+    "previous": 59.90,
+    "current": 62.40,
+    "difference": 2.50,
+    "cause":"Prorrateo de Protección Móvil",
+    "explanation":"Tu plan base sigue costando S/59.90. Este mes aparece S/2.50 adicionales por un prorrateo de Protección Móvil: solo se cobraron los días en que estuvo activo dentro del ciclo.",
+    "evidenceStatus":"VERIFIED",
+    "milestones":[
+      {"date":"11 AGO","title":"Activación registrada","detail":"Protección Móvil quedó activa dentro del ciclo."},
+      {"date":"11–15 AGO","title":"5 días de servicio","detail":"Se calcula únicamente el periodo usado."},
+      {"date":"15 AGO","title":"Cargo prorrateado","detail":"Se incorpora S/2.50 al recibo del mes."}
+    ]
+  }
+}

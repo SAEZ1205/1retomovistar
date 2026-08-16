@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#019be1" />
+  <title>Mi Movistar · Entiende tu recibo con LucIA</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="brand" data-nav="inicio" aria-label="Inicio"><span class="m-logo">M</span><span>Mi Movistar</span></button>
+      <div class="top-actions"><button class="pill ghost" id="demoBadge">Demo verificada</button><button class="avatar">MF</button></div>
+    </header>
+
+    <main>
+      <section class="page active" id="page-inicio">
+        <div class="hero-grid">
+          <article class="hero-card">
+            <div class="hero-copy">
+              <span class="eyebrow">TU RECIBO DE AGOSTO</span>
+              <div class="amount">S/62.40</div>
+              <div class="variation"><span>↑ S/2.50</span> respecto al mes anterior</div>
+              <p>Detectamos un cambio pequeño y encontramos la causa con evidencia del ciclo.</p>
+              <div class="actions"><button class="btn primary" data-nav="entiende">Entender mi recibo</button><button class="btn secondary" data-nav="recibos">Ver mis recibos</button></div>
+            </div>
+            <img class="hero-lucia" src="assets/lucia/senalando.svg" alt="LucIA señalando" />
+          </article>
+
+          <article class="mini-card plan-card"><span class="eyebrow">TU PLAN</span><h3>Plan Móvil 40 GB</h3><div class="plan-price">S/59.90 <small>/ mes</small></div><div class="chips"><span>40 GB</span><span>WhatsApp ilimitado</span><span>Llamadas ilimitadas</span></div></article>
+        </div>
+
+        <h2 class="section-title">Lo importante, de un vistazo</h2>
+        <div class="quick-grid">
+          <button class="quick-card" data-nav="entiende"><span class="quick-icon">↗</span><strong>¿Qué cambió?</strong><small>Te explicamos el +S/2.50</small></button>
+          <button class="quick-card" data-nav="recibos"><span class="quick-icon">▤</span><strong>Historial</strong><small>Actual + 5 recibos anteriores</small></button>
+          <button class="quick-card" data-nav="aprende"><span class="quick-icon">?</span><strong>Aprende fácil</strong><small>Prorrateo, reconexión y más</small></button>
+          <button class="quick-card" data-open-chat><span class="quick-icon">✦</span><strong>Pregúntale a LucIA</strong><small>Escribe como quieras</small></button>
+        </div>
+      </section>
+
+      <section class="page" id="page-recibos">
+        <div class="page-heading"><div><span class="eyebrow">MIS RECIBOS</span><h1>Tu historial, sin vueltas</h1><p>Compara montos, abre la ficha de cada mes y detecta variaciones.</p></div><img src="assets/lucia/libro.svg" alt="LucIA leyendo" /></div>
+        <div class="chart-card"><div class="chart-header"><div><strong>Evolución de tus recibos</strong><small>Marzo — Agosto 2026</small></div><span class="safe-badge">Sin cambios en el plan base</span></div><div class="bars" id="bars"></div></div>
+        <div class="receipt-grid" id="receiptGrid"></div>
+      </section>
+
+      <section class="page" id="page-entiende">
+        <div class="page-heading tight"><div><span class="eyebrow">ENTIENDE TU RECIBO</span><h1>¿Qué cambió este mes?</h1><p>No te damos una respuesta genérica: comparamos tus recibos y te mostramos la evidencia.</p></div><img src="assets/lucia/lupa.svg" alt="LucIA investigando" /></div>
+
+        <div class="compare-card">
+          <div class="month-box"><small>JULIO</small><strong>S/59.90</strong><span>Plan base</span><button class="text-btn" data-receipt="Julio">Ver ficha de julio</button></div>
+          <div class="arrow-change"><span>+S/2.50</span><small>DIFERENCIA</small></div>
+          <div class="month-box current"><small>AGOSTO</small><strong>S/62.40</strong><span>Plan + prorrateo</span><button class="text-btn" data-receipt="Agosto">Ver ficha de agosto</button></div>
+        </div>
+
+        <article class="explanation-card">
+          <div class="explanation-icon">✓</div>
+          <div><span class="eyebrow">CAUSA VERIFICADA</span><h2>Prorrateo de Protección Móvil</h2><p>Tu plan base sigue costando <strong>S/59.90</strong>. Los <strong>S/2.50</strong> adicionales corresponden a un prorrateo: se cobraron solo los días en que el servicio estuvo activo dentro del ciclo.</p><button class="trace-link" id="openTrace">¿Cómo llegamos a esta explicación? <span>→</span></button></div>
+        </article>
+
+        <div class="milestone-card">
+          <div class="milestone-title"><div><span class="eyebrow">LO QUE PASÓ</span><h2>Tres hitos, sin tecnicismos</h2></div><span class="safe-badge">Evidencia: VERIFIED</span></div>
+          <div class="timeline">
+            <div class="event"><span class="dot"></span><time>11 AGO</time><strong>Activación registrada</strong><p>Protección Móvil quedó activa dentro del ciclo.</p></div>
+            <div class="event"><span class="dot"></span><time>11–15 AGO</time><strong>5 días de servicio</strong><p>El sistema toma únicamente el periodo utilizado.</p></div>
+            <div class="event"><span class="dot"></span><time>15 AGO</time><strong>Cargo prorrateado</strong><p>Se incorpora S/2.50 al recibo del mes.</p></div>
+          </div>
+          <div class="lucia-tip"><img src="assets/lucia/pulgar.svg" alt="LucIA pulgar arriba" /><div><strong>LucIA te lo resume:</strong><p>“No subió el precio de tu plan. Este mes solo se añadió un cobro proporcional de S/2.50.”</p></div></div>
+        </div>
+
+        <div class="feedback-card"><div><strong>¿Esto resolvió tu duda?</strong><small>Tu respuesta nos ayuda a saber si LucIA debe explicar de otra forma.</small></div><div class="feedback-actions"><button class="btn success" data-feedback="yes">Sí, quedó claro</button><button class="btn secondary" data-feedback="no">Todavía tengo dudas</button></div><div id="feedbackResult" class="feedback-result"></div></div>
+      </section>
+
+      <section class="page" id="page-aprende">
+        <div class="learn-hero"><div><span class="eyebrow">CONOCE TU RECIBO TÉCNICAMENTE</span><h1>Te lo explico fácil, sin letra pequeña</h1><p>Abre cualquier concepto. LucIA te dice qué significa y cómo se ve en un recibo real.</p></div><img src="assets/lucia/idea.svg" alt="LucIA profesora" /></div>
+        <div class="concept-grid" id="conceptGrid"></div>
+      </section>
+
+      <section class="page" id="page-asesor">
+        <div class="page-heading"><div><span class="eyebrow">CALL CENTER · DEMO</span><h1>El asesor recibe el contexto</h1><p>Si LucIA no puede confirmar un cargo o el cliente sigue con dudas, el caso llega completo.</p></div><img src="assets/lucia/brazos.svg" alt="LucIA segura" /></div>
+        <div class="advisor-grid">
+          <article class="metric"><small>CASOS NUEVOS</small><strong>3</strong><span>+1 hoy</span></article><article class="metric"><small>EN ATENCIÓN</small><strong>2</strong><span>Tiempo medio 4m</span></article><article class="metric"><small>RESUELTOS</small><strong>18</strong><span>86% sin repetir historia</span></article>
+        </div>
+        <div class="case-card"><div class="case-head"><div><span class="case-id">LUCIA-0042</span><strong>Cargo no reconocido</strong></div><span class="status pending">Pendiente</span></div><div class="case-cols"><div><small>Cliente</small><strong>María Fernanda · 987 *** 321</strong></div><div><small>Pregunta</small><strong>“Yo nunca pedí ese servicio”</strong></div><div><small>Razón de hand-off</small><strong>EVIDENCIA_INSUFICIENTE</strong></div></div><div class="summary-box"><strong>Resumen automático para el asesor</strong><p>LucIA revisó recibo actual, histórico y movimientos. El cargo aparece en facturación, pero no existe evidencia suficiente para confirmar el origen. El cliente no debe repetir la conversación.</p></div><div class="actions"><button class="btn primary">Tomar caso</button><button class="btn secondary">Marcar resuelto</button></div></div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navegación principal">
+      <button class="active" data-nav="inicio"><span>⌂</span>Inicio</button>
+      <button data-nav="recibos"><span>▤</span>Recibos</button>
+      <button class="center-action" data-nav="entiende"><span>✦</span>Entender</button>
+      <button data-nav="aprende"><span>?</span>Aprende</button>
+      <button data-nav="asesor"><span>♧</span>Asesor</button>
+    </nav>
+
+    <button class="lucia-fab" data-open-chat aria-label="Abrir LucIA"><img src="assets/lucia/saludo.svg" alt=""/><span>Pregúntale a LucIA</span></button>
+
+    <aside class="chat-panel" id="chatPanel" aria-hidden="true">
+      <div class="chat-head"><div><img src="assets/lucia/saludo.svg" alt="LucIA"/><div><strong>LucIA</strong><small>Te explico tu recibo</small></div></div><button id="closeChat">×</button></div>
+      <div class="chat-body" id="chatBody"><div class="msg bot">Hola 👋 Ya revisé tu recibo. Puedes preguntarme “¿por qué subió?”, “¿qué es prorrateo?” o escribirlo como te salga.</div></div>
+      <div class="quick-prompts"><button>¿Por qué subió?</button><button>¿Qué es prorrateo?</button><button>No entendí</button></div>
+      <form class="chat-form" id="chatForm"><input id="chatInput" placeholder="Escribe tu duda…" autocomplete="off"/><button>➤</button></form>
+    </aside>
+
+    <div class="modal-backdrop" id="traceModal" hidden>
+      <div class="modal trace-modal"><button class="modal-close" data-close-modal>×</button><span class="eyebrow">TRAZABILIDAD</span><h2>¿Cómo llegamos a esta explicación?</h2><p class="muted">LucIA no inventó el monto. La explicación se armó con estas piezas.</p>
+        <div class="trace-receipts"><button class="trace-receipt" data-receipt="Julio"><small>RECIBO ANTERIOR</small><strong>Julio · S/59.90</strong><span>Ver ficha →</span></button><button class="trace-receipt current" data-receipt="Agosto"><small>RECIBO ACTUAL</small><strong>Agosto · S/62.40</strong><span>Ver ficha →</span></button></div>
+        <div class="evidence-list"><div><span>✓</span><p><strong>Movimiento encontrado</strong><small>Activación de Protección Móvil</small></p></div><div><span>✓</span><p><strong>Fecha</strong><small>11 de agosto de 2026</small></p></div><div><span>✓</span><p><strong>Cargo encontrado</strong><small>Prorrateo · S/2.50</small></p></div><div><span>✓</span><p><strong>Regla aplicada</strong><small>Cobro proporcional por días activos dentro del ciclo</small></p></div></div>
+        <div class="proof"><strong>Resultado:</strong> S/59.90 + S/2.50 = <b>S/62.40</b><span>VERIFIED</span></div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" id="receiptModal" hidden><div class="modal receipt-modal"><button class="modal-close" data-close-receipt>×</button><div id="receiptContent"></div></div></div>
+    <div class="toast" id="toast"></div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
