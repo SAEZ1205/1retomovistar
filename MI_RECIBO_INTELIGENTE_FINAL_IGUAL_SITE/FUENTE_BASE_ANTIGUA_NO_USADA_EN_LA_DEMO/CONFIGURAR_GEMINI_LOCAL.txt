@@ -1,0 +1,34 @@
+GEMINI LOCAL — LucIA
+=====================
+
+1) En esta misma carpeta crea un archivo llamado:
+
+.env.local
+
+2) Pega exactamente esto y reemplaza SOLO la API key:
+
+GEMINI_API_KEY=PEGA_AQUI_TU_API_KEY
+GEMINI_MODEL=gemini-2.5-flash
+VITE_LUCIA_API_URL=http://127.0.0.1:8787/api/lucia
+LUCIA_PORT=8787
+
+3) Guarda el archivo.
+
+4) Ejecuta:
+
+npm install
+npm run dev:full
+
+5) Abre:
+
+http://127.0.0.1:3000/?caso=normal
+http://127.0.0.1:3000/?caso=prorrateo
+http://127.0.0.1:3000/?caso=reconexion
+http://127.0.0.1:3000/?caso=descuento
+
+IMPORTANTE
+----------
+- .env.local NO se sube a GitHub.
+- La API key solo la lee backend/local-lucia-server.mjs.
+- El navegador nunca recibe GEMINI_API_KEY.
+- Si Gemini falla o no está configurado, LucIA vuelve automáticamente al modo conversacional local verificado.
