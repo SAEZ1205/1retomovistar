@@ -1,7 +1,15 @@
-import billing from "@/src/data/mocks/billingData";
+import billing, { activeScenarioId } from "@/src/data/mocks/billingData";
 import type { BillAnalysis, Receipt } from "@/src/types/billing";
 
 export type { Receipt } from "@/src/types/billing";
+export { activeScenarioId };
+
+export const scenario = {
+  id: activeScenarioId,
+  label: billing.label,
+  datasetBasis: billing.dataset_basis,
+  analysis: billing.analysis,
+};
 
 export const customer = {
   name: billing.customer.name,
@@ -53,8 +61,28 @@ export async function getBillAnalysis(): Promise<BillAnalysis> {
   return {
     current: currentReceipt,
     previous: previousReceipt,
-    difference: currentReceipt.amount - previousReceipt.amount,
-    evidence: { status: "VERIFIED", sources: currentReceipt.evidence, explanation: currentReceipt.explanation },
+    difference: Number((currentReceipt.amount - previousReceipt.amount).toFixed(2)),
+    evidence: {
+      status: billing.analysis.evidence_status as BillAnalysis["evidence"]["status"],
+      sources: billing.analysis.evidence,
+      explanation: billing.analysis.explanation,
+    },
+  };
+}
+
+export function getScenarioFacts() {
+  return {
+    scenario: activeScenarioId,
+    label: billing.label,
+    cause: billing.analysis.cause,
+    evidenceStatus: billing.analysis.evidence_status,
+    explanation: billing.analysis.explanation,
+    evidence: billing.analysis.evidence,
+    currentTotal: currentReceipt.amount,
+    previousTotal: currentReceipt.previous,
+    difference: Number((currentReceipt.amount - currentReceipt.previous).toFixed(2)),
+    plan: customer.planName,
+    planPrice: customer.planPrice,
   };
 }
 
