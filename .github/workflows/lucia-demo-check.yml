@@ -1,0 +1,23 @@
+name: LucIA demo build check
+
+on:
+  push:
+    branches:
+      - feature/lucia-dataset-demo
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: MI_RECIBO_INTELIGENTE_FINAL_IGUAL_SITE/FUENTE_BASE_ANTIGUA_NO_USADA_EN_LA_DEMO
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: MI_RECIBO_INTELIGENTE_FINAL_IGUAL_SITE/FUENTE_BASE_ANTIGUA_NO_USADA_EN_LA_DEMO/package-lock.json
+      - run: npm ci
+      - run: npm run build
