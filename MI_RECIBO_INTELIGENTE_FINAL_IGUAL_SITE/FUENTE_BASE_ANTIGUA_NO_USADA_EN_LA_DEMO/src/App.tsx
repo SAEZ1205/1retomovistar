@@ -39,6 +39,7 @@ export default function App() {
   const [asking, setAsking] = useState(false);
   const [handoff, setHandoff] = useState(false);
   const [resolution, setResolution] = useState<Resolution>("pending");
+  const [billingPending, setBillingPending] = useState(false);
   const [showResolutionPrompt, setShowResolutionPrompt] = useState(false);
   const [offerStatus, setOfferStatus] = useState<OfferStatus>("locked");
   const [whatsappState, setWhatsappState] = useState<WhatsAppState>("idle");
@@ -84,15 +85,22 @@ export default function App() {
     setMessages((current) => [...current, { role: "user", text: clean }]);
     setAsking(true);
     try {
-      const result = await askLucia(clean, historyBeforeQuestion);
+      const rawResult = await askLucia(clean, historyBeforeQuestion);
+      const result = rawResult.showOffer && billingPending
+        ? { ...rawResult, showOffer: false, answer: "Sí tengo una opción para tu línea, pero primero terminemos de aclarar el cobro actual. Cuando confirmes que quedó claro, pídeme la oferta y te la muestro.", source: "Regla comercial: problema pendiente → no oferta" }
+        : rawResult;
       setMessages((current) => [...current, { role: "bot", text: result.answer, source: result.source, suggestHuman: result.suggestHuman }]);
       setShowResolutionPrompt(result.needsResolutionCheck);
-      if (result.needsResolutionCheck) setResolution("pending");
+      if (result.needsResolutionCheck) {
+        setResolution("pending");
+        setBillingPending(true);
+      }
       if (result.suggestHuman) {
         setResolution("needs-help");
+        setBillingPending(false);
         setHandoff(true);
       }
-      if (result.showOffer && resolution !== "needs-help") setOfferStatus("available");
+      if (result.showOffer && !billingPending) setOfferStatus("available");
     } finally { setAsking(false); }
   }
 
@@ -100,6 +108,7 @@ export default function App() {
 
   function markResolved() {
     setResolution("resolved");
+    setBillingPending(false);
     setShowResolutionPrompt(false);
     setHandoff(false);
     setOfferStatus("locked");
@@ -108,6 +117,7 @@ export default function App() {
 
   function askForHuman() {
     setResolution("needs-help");
+    setBillingPending(false);
     setShowResolutionPrompt(false);
     setOfferStatus("locked");
     setHandoff(true);
