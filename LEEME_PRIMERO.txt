@@ -1,9 +1,0 @@
-RESPALDO FINAL — CHECKPOINT 20
-=============================
-
-1) npm install
-2) npm run dev
-3) abrir http://localhost:3000
-
-ESTA COPIA ES INDEPENDIENTE DEL REPO DE GITHUB.
-No borres el ZIP si quieres conservar exactamente este checkpoint reconstruido.
