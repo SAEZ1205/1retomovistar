@@ -8,7 +8,8 @@ const outDir = path.join(root, "public/recibos/demo");
 await fs.mkdir(outDir, { recursive: true });
 
 const money = (n) => `S/${Number(n).toFixed(2)}`;
-const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (m) => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));
+const entities = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" };
+const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (m) => entities[m]);
 
 for (const [scenarioId, data] of Object.entries(scenarios)) {
   for (const receipt of data.receipts) {
