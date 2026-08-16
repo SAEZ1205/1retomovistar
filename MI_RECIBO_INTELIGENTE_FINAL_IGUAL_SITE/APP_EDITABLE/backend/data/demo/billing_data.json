@@ -1,0 +1,151 @@
+{
+  "customer": {
+    "name": "Sebastián",
+    "full_name": "Sebastián Alexis Euribe Zambrano",
+    "line": "968 821 435",
+    "account": "000968821435",
+    "plan_name": "Plan Móvil 40 GB",
+    "plan_price": 59.90,
+    "plan_gb": 40,
+    "cycle_start": "16 de julio",
+    "cycle_end": "15 de agosto",
+    "days_remaining": 5
+  },
+  "receipts": [
+    {
+      "slug": "marzo",
+      "label": "Marzo 2026",
+      "short_month": "Mar",
+      "period": "16 feb - 15 mar",
+      "issued": "31 mar 2026",
+      "due": "15 abr 2026",
+      "code": "F001-003842",
+      "amount": 59.90,
+      "previous": 59.90,
+      "status": "Pagado",
+      "usage_gb": 24.8,
+      "note": "Sin variaciones",
+      "charges": [{"label": "Plan Móvil 40 GB", "amount": 59.90, "kind": "plan"}],
+      "explanation": "El total se mantuvo en S/59.90. No hubo cargos adicionales ni cambios en tu plan.",
+      "evidence": ["Detalle del recibo de marzo", "Plan vigente"],
+      "file": "/recibos/recibo-marzo-2026.pdf"
+    },
+    {
+      "slug": "abril",
+      "label": "Abril 2026",
+      "short_month": "Abr",
+      "period": "16 mar - 15 abr",
+      "issued": "30 abr 2026",
+      "due": "15 may 2026",
+      "code": "F001-004216",
+      "amount": 59.90,
+      "previous": 59.90,
+      "status": "Pagado",
+      "usage_gb": 26.4,
+      "note": "Sin variaciones",
+      "charges": [{"label": "Plan Móvil 40 GB", "amount": 59.90, "kind": "plan"}],
+      "explanation": "El monto fue igual al de marzo. No se registraron paquetes, servicios ni ajustes adicionales.",
+      "evidence": ["Detalle del recibo de abril", "Plan vigente"],
+      "file": "/recibos/recibo-abril-2026.pdf"
+    },
+    {
+      "slug": "mayo",
+      "label": "Mayo 2026",
+      "short_month": "May",
+      "period": "16 abr - 15 may",
+      "issued": "31 may 2026",
+      "due": "15 jun 2026",
+      "code": "F001-004589",
+      "amount": 62.40,
+      "previous": 59.90,
+      "status": "Pagado",
+      "usage_gb": 28.1,
+      "note": "Prorrateo de S/2.50",
+      "charges": [
+        {"label": "Plan Móvil 40 GB", "amount": 59.90, "kind": "plan"},
+        {"label": "Protección Móvil - 5 días", "amount": 2.50, "kind": "adjustment"}
+      ],
+      "explanation": "Protección Móvil estuvo activo del 11 al 15 de mayo. Solo se cobraron esos cinco días: S/2.50.",
+      "evidence": ["Recibo de mayo", "Orden PRO-1105", "Regla de prorrateo"],
+      "file": "/recibos/recibo-mayo-2026.pdf"
+    },
+    {
+      "slug": "junio",
+      "label": "Junio 2026",
+      "short_month": "Jun",
+      "period": "16 may - 15 jun",
+      "issued": "30 jun 2026",
+      "due": "15 jul 2026",
+      "code": "F001-004954",
+      "amount": 59.90,
+      "previous": 62.40,
+      "status": "Pagado",
+      "usage_gb": 30.7,
+      "note": "Volvió al monto habitual",
+      "charges": [{"label": "Plan Móvil 40 GB", "amount": 59.90, "kind": "plan"}],
+      "explanation": "El total volvió a S/59.90 porque el prorrateo de mayo fue un cobro único. Tu plan no cambió.",
+      "evidence": ["Recibo de junio", "Plan vigente", "Sin servicios adicionales"],
+      "file": "/recibos/recibo-junio-2026.pdf"
+    },
+    {
+      "slug": "julio",
+      "label": "Julio 2026",
+      "short_month": "Jul",
+      "period": "16 jun - 15 jul",
+      "issued": "31 jul 2026",
+      "due": "15 ago 2026",
+      "code": "F001-005327",
+      "amount": 59.90,
+      "previous": 59.90,
+      "status": "Pagado",
+      "usage_gb": 27.2,
+      "note": "Sin variaciones",
+      "charges": [{"label": "Plan Móvil 40 GB", "amount": 59.90, "kind": "plan"}],
+      "explanation": "El monto se mantuvo estable frente a junio. No encontramos cargos nuevos.",
+      "evidence": ["Comparación junio-julio", "Plan vigente"],
+      "file": "/recibos/recibo-julio-2026.pdf"
+    },
+    {
+      "slug": "agosto",
+      "label": "Agosto 2026",
+      "short_month": "Ago",
+      "period": "16 jul - 15 ago",
+      "issued": "10 ago 2026",
+      "due": "15 ago 2026",
+      "code": "F001-005701",
+      "amount": 82.90,
+      "previous": 59.90,
+      "status": "Pendiente",
+      "usage_gb": 34.8,
+      "note": "+S/23.00 vs. julio",
+      "charges": [
+        {"label": "Plan Móvil 40 GB", "amount": 59.90, "kind": "plan"},
+        {"label": "Paquete adicional 10 GB", "amount": 15.00, "kind": "extra"},
+        {"label": "Movistar Música", "amount": 8.00, "kind": "extra"}
+      ],
+      "explanation": "El aumento de S/23.00 viene de un paquete de 10 GB por S/15.00 y Movistar Música por S/8.00. El precio de tu plan no cambió.",
+      "evidence": ["Recibo de agosto", "Orden PAQ-0810", "Alta MUS-0731"],
+      "file": "/recibos/recibo-agosto-2026.pdf"
+    }
+  ],
+  "daily_usage": [0.9, 1.1, 1.4, 1.2, 1.6, 1.0, 1.3, 1.5, 1.4, 0.8, 1.7, 1.2, 1.4, 1.1, 1.6, 1.3, 1.5, 1.0, 1.4, 1.8, 1.2, 1.5, 1.7, 1.1, 1.3, 1.8],
+  "usage_categories": [
+    {"label": "Video", "detail": "YouTube, streaming y reels", "gb": 17.1, "color": "#00a9e0"},
+    {"label": "Redes sociales", "detail": "Mensajes, fotos y contenido", "gb": 9.8, "color": "#7b3ff2"},
+    {"label": "Navegación", "detail": "Mapas y transporte", "gb": 3.6, "color": "#00a989"},
+    {"label": "Otros", "detail": "Correo, web y actualizaciones", "gb": 4.3, "color": "#f5a623"}
+  ],
+  "benefits": [
+    "WhatsApp ilimitado incluido",
+    "Llamadas nacionales ilimitadas",
+    "Movistar TV Lite incluido"
+  ],
+  "offer": {
+    "id": "BOLSA-5GB-590",
+    "name": "Bolsa extra de 5 GB",
+    "price": 5.90,
+    "duration": "7 días",
+    "reason": "Has usado el 87% de tu plan y faltan 5 días para el cierre.",
+    "rule": "Solo se muestra después de resolver la consulta y cuando el consumo supera el 85%."
+  }
+}
