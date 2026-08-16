@@ -12,7 +12,7 @@ import MisRecibos from "@/src/pages/cliente/MisRecibos";
 import EntiendeRecibo from "@/src/pages/cliente/EntiendeRecibo";
 import ConoceRecibo from "@/src/pages/cliente/ConoceRecibo";
 import AdvisorWorkspace from "@/src/pages/asesor/AdvisorWorkspace";
-import { benefits, currentReceipt, customer, dailyUsage, offer } from "@/src/services/billingService";
+import { activeScenarioId, benefits, currentReceipt, customer, dailyUsage, offer, scenario } from "@/src/services/billingService";
 import { sendHandoff } from "@/src/services/handoffService";
 import { requestCallback } from "@/src/services/callCenterService";
 import { askLucia } from "@/src/services/luciaService";
@@ -22,7 +22,12 @@ import type { CallCenterState, WhatsAppState } from "@/src/types/case";
 import type { ChatMessage, Resolution } from "@/src/types/lucia";
 import type { OfferStatus } from "@/src/types/offer";
 
-const quickQuestions = ["¿Por qué subió mi recibo?", "¿Qué me cobraron en mayo?", "¿Cuántos gigas me quedan?", "¿Qué beneficios ya tengo?"];
+const scenarioQuestion: Record<string, string> = {
+  normal: "¿Cambió algo en mi recibo?",
+  prorrateo: "¿Qué es el prorrateo que me cobraron?",
+  reconexion: "¿Por qué me cobraron reconexión?",
+  descuento: "¿Por qué terminó mi descuento?",
+};
 
 export default function App() {
   const [section, setSection] = useState<MainSection>("inicio");
@@ -34,15 +39,17 @@ export default function App() {
   const [asking, setAsking] = useState(false);
   const [handoff, setHandoff] = useState(false);
   const [resolution, setResolution] = useState<Resolution>("pending");
+  const [billingPending, setBillingPending] = useState(false);
   const [showResolutionPrompt, setShowResolutionPrompt] = useState(false);
   const [offerStatus, setOfferStatus] = useState<OfferStatus>("locked");
   const [whatsappState, setWhatsappState] = useState<WhatsAppState>("idle");
   const [whatsappMessage, setWhatsappMessage] = useState("");
   const [callCenterState, setCallCenterState] = useState<CallCenterState>("idle");
   const [callCenterMessage, setCallCenterMessage] = useState("");
-  const [messages, setMessages] = useState<ChatMessage[]>([{ role: "bot", text: "Hola, soy LucIA. Puedo explicarte tus recibos y tu consumo usando únicamente datos verificados.", source: "Base financiera de seis recibos" }]);
+  const [messages, setMessages] = useState<ChatMessage[]>([{ role: "bot", text: `Hola, soy LucIA. Estoy revisando tu caso de ${scenario.label.toLowerCase()}. Pregúntame como hablarías normalmente; usaré únicamente la evidencia disponible.`, source: `Caso demo ${scenario.label} · ${scenario.analysis.evidence_status}` }]);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
+  const quickQuestions = useMemo(() => [scenarioQuestion[activeScenarioId], "¿Por qué cambió mi recibo?", "¿Cuántos gigas me quedan?", "¿Qué beneficios tengo?"], []);
   const usedPercent = Math.round((currentReceipt.usage / customer.planData) * 100);
   const remaining = customer.planData - currentReceipt.usage;
   const average = currentReceipt.usage / dailyUsage.length;
@@ -70,17 +77,30 @@ export default function App() {
   async function ask(raw: string) {
     const clean = raw.trim();
     if (!clean || asking) return;
+    const historyBeforeQuestion = messages;
     setQuestion("");
-    setResolution("pending");
     setShowResolutionPrompt(false);
+    setHandoff(false);
     setOfferStatus("locked");
     setMessages((current) => [...current, { role: "user", text: clean }]);
     setAsking(true);
     try {
-      const result = await askLucia(clean);
-      setMessages((current) => [...current, { role: "bot", text: result.answer, source: result.source, suggestHuman: result.intent === "unknown" }]);
+      const rawResult = await askLucia(clean, historyBeforeQuestion);
+      const result = rawResult.showOffer && billingPending
+        ? { ...rawResult, showOffer: false, answer: "Sí tengo una opción para tu línea, pero primero terminemos de aclarar el cobro actual. Cuando confirmes que quedó claro, pídeme la oferta y te la muestro.", source: "Regla comercial: problema pendiente → no oferta" }
+        : rawResult;
+      setMessages((current) => [...current, { role: "bot", text: result.answer, source: result.source, suggestHuman: result.suggestHuman }]);
       setShowResolutionPrompt(result.needsResolutionCheck);
-      if (result.intent === "unknown") setHandoff(true);
+      if (result.needsResolutionCheck) {
+        setResolution("pending");
+        setBillingPending(true);
+      }
+      if (result.suggestHuman) {
+        setResolution("needs-help");
+        setBillingPending(false);
+        setHandoff(true);
+      }
+      if (result.showOffer && !billingPending) setOfferStatus("available");
     } finally { setAsking(false); }
   }
 
@@ -88,18 +108,20 @@ export default function App() {
 
   function markResolved() {
     setResolution("resolved");
+    setBillingPending(false);
     setShowResolutionPrompt(false);
     setHandoff(false);
-    setOfferStatus("available");
-    setMessages((current) => [...current, { role: "bot", text: `Perfecto. Recuerda que tu plan ya incluye ${benefits.join(", ").toLowerCase()}. Como tu consulta quedó resuelta, ahora sí puedo mostrar una opción pertinente.`, source: "Beneficios vigentes · Regla comercial O-87" }]);
+    setOfferStatus("locked");
+    setMessages((current) => [...current, { role: "bot", text: `Perfecto. Recuerda que tu plan ya incluye ${benefits.join(", ").toLowerCase()}. Si quieres revisar una oferta o mejorar tu plan, pídemelo y te mostraré una opción acorde a este caso.`, source: "Beneficios vigentes · oferta solo a pedido" }]);
   }
 
   function askForHuman() {
     setResolution("needs-help");
+    setBillingPending(false);
     setShowResolutionPrompt(false);
     setOfferStatus("locked");
     setHandoff(true);
-    setMessages((current) => [...current, { role: "bot", text: "Preparé un resumen con tu línea, recibo, evidencia y conversación para que no tengas que repetirlo.", source: "Resumen de derivación" }]);
+    setMessages((current) => [...current, { role: "bot", text: "De acuerdo. Preparé el contexto del recibo y la conversación para que un asesor pueda continuar sin que repitas todo.", source: "Resumen de derivación" }]);
   }
 
   async function prepareHandoff() {
@@ -120,7 +142,7 @@ export default function App() {
 
   function acceptOffer() {
     setOfferStatus("accepted");
-    setMessages((current) => [...current, { role: "bot", text: offerConfirmation(offer), source: "Catálogo controlado · Oferta O-87" }]);
+    setMessages((current) => [...current, { role: "bot", text: offerConfirmation(offer), source: `Oferta demo controlada ${offer.id}` }]);
   }
 
   if (advisorMode) return <AdvisorWorkspace />;

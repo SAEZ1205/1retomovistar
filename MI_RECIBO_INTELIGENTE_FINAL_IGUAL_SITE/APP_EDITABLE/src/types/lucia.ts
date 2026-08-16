@@ -1,5 +1,10 @@
+import type { EvidenceStatus } from "./billing";
+
 export type Resolution = "pending" | "resolved" | "needs-help";
-export type Intent = "increase" | "breakdown" | "usage" | "categories" | "plan" | "receipts" | "receipt_month" | "payment" | "proration" | "discount_demo" | "benefits" | "offer" | "unknown";
+export type Intent =
+  | "increase" | "breakdown" | "usage" | "categories" | "plan" | "receipts" | "receipt_month"
+  | "payment" | "proration" | "reconnection" | "discount" | "benefits" | "offer"
+  | "human" | "greeting" | "thanks" | "followup" | "unknown";
 
 export type ChatMessage = {
   role: "user" | "bot";
@@ -23,6 +28,9 @@ export type LuciaReply = {
   source: string;
   intent: Intent;
   needsResolutionCheck: boolean;
+  suggestHuman?: boolean;
+  showOffer?: boolean;
+  evidenceStatus?: EvidenceStatus;
 };
 
 export type LuciaResponse = LuciaReply;

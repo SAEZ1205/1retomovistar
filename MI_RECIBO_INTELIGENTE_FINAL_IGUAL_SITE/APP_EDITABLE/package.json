@@ -4,8 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --host 127.0.0.1 --port 3000",
-    "build": "tsc --noEmit && vite build && node scripts/prepare-sites-artifact.mjs",
+    "prepare:demo": "node scripts/generate-demo-receipts.mjs",
+    "dev": "npm run prepare:demo && vite --host 127.0.0.1 --port 3000",
+    "dev:ai": "node --env-file=.env.local backend/local-lucia-server.mjs",
+    "dev:full": "node --env-file=.env.local scripts/dev-full.mjs",
+    "build": "npm run prepare:demo && tsc --noEmit && vite build && node scripts/prepare-sites-artifact.mjs",
     "preview": "vite preview --host 0.0.0.0 --port 4173",
     "lint": "tsc --noEmit"
   },
