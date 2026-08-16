@@ -8,7 +8,6 @@ import LuciaImage from "./LuciaImage";
 import LuciaMessage from "./LuciaMessage";
 import TypingIndicator from "./TypingIndicator";
 import QuickQuestions from "./QuickQuestions";
-import FeedbackButtons from "./FeedbackButtons";
 
 type Props = {
   messages: ChatMessage[]; asking: boolean; question: string; questions: string[];
@@ -39,6 +38,8 @@ function bannerForOffer(offer: Offer) {
 }
 
 export default function LuciaChat(props: Props) {
+  const showStarterQuestions = props.messages.length <= 1 && !props.asking && !props.handoff && props.offerStatus === "locked";
+
   return (
     <div className="chat-backdrop" onMouseDown={(event) => event.target === event.currentTarget && props.onClose()}>
       <aside className="chat-panel" aria-label="Chat con LucIA">
@@ -47,7 +48,6 @@ export default function LuciaChat(props: Props) {
         <div className="chat-scroll">
           {props.messages.map((message, index) => <LuciaMessage key={`${message.role}-${index}`} message={message} onHuman={props.onHuman} />)}
           {props.asking && <TypingIndicator />}
-          {props.showFeedback && !props.asking && <FeedbackButtons onResolved={props.onResolved} onHuman={props.onHuman} />}
           {props.offerStatus !== "locked" && (
             <section className="offer-card">
               <img src={bannerForOffer(props.offer)} alt={`Promoción recomendada: ${props.offer.name}`} style={offerBannerStyle} />
@@ -60,10 +60,10 @@ export default function LuciaChat(props: Props) {
           {props.handoff && (
             <section className="handoff-card"><Icon name="headset" /><div><small className="handoff-eyebrow">ATENCIÓN CON CONTEXTO</small><strong>El asesor ya puede recibir tu caso</strong><p>Le enviaremos tu pregunta, recibo, evidencia y conversación para que no repitas todo.</p><div className="handoff-actions"><Button onClick={props.onRequestCallback} disabled={props.callCenterState === "sending"}>{props.callCenterState === "sending" ? "Solicitando…" : "Quiero que me llamen"}</Button><Button variant="secondary" onClick={props.onSendHandoff} disabled={props.whatsappState === "sending"}>{props.whatsappState === "sending" ? "Preparando…" : "Solo enviar el caso"}</Button></div>{props.callCenterMessage && <small className="handoff-result">{props.callCenterMessage}</small>}{props.whatsappMessage && <small className="handoff-result">{props.whatsappMessage}</small>}<small className="handoff-privacy"><Icon name="check" size={13} /> Tu número no se muestra en la conversación.</small></div></section>
           )}
-          {!props.handoff && !props.showFeedback && props.offerStatus === "locked" && <QuickQuestions questions={props.questions} onAsk={props.onAsk} />}
+          {showStarterQuestions && <QuickQuestions questions={props.questions} onAsk={props.onAsk} />}
           <div ref={props.endRef} />
         </div>
-        <form className="chat-input" onSubmit={props.onSubmit}><input value={props.question} onChange={(event) => props.onQuestion(event.target.value)} placeholder="Ej.: xq me vino más caro?" aria-label="Pregunta para LucIA" /><button disabled={props.asking} aria-label="Enviar"><Icon name="send" size={20} /></button></form>
+        <form className="chat-input" onSubmit={props.onSubmit}><input value={props.question} onChange={(event) => props.onQuestion(event.target.value)} placeholder="Escríbeme como hablas normalmente…" aria-label="Pregunta para LucIA" /><button disabled={props.asking} aria-label="Enviar"><Icon name="send" size={20} /></button></form>
       </aside>
     </div>
   );
