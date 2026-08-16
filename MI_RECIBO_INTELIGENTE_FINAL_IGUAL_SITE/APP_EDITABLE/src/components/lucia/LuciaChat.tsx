@@ -1,4 +1,4 @@
-import type { FormEvent, RefObject } from "react";
+import type { CSSProperties, FormEvent, RefObject } from "react";
 import Button from "@/src/components/shared/Button";
 import Icon from "@/src/components/shared/Icon";
 import type { CallCenterState, WhatsAppState } from "@/src/types/case";
@@ -21,6 +21,23 @@ type Props = {
   onRequestCallback: () => void;
 };
 
+const offerBannerStyle: CSSProperties = {
+  width: "100%",
+  height: 118,
+  objectFit: "cover",
+  objectPosition: "center",
+  borderRadius: 14,
+  display: "block",
+  marginBottom: 12,
+};
+
+function bannerForOffer(offer: Offer) {
+  const text = `${offer.id} ${offer.name}`.toLowerCase();
+  if (/30\s?gb|bono/.test(text)) return "/promos/plan-30gb.png";
+  if (/49|225|cambia|port/.test(text)) return "/promos/inicio-cambiate.png";
+  return "/promos/inicio-postpago.png";
+}
+
 export default function LuciaChat(props: Props) {
   return (
     <div className="chat-backdrop" onMouseDown={(event) => event.target === event.currentTarget && props.onClose()}>
@@ -33,6 +50,7 @@ export default function LuciaChat(props: Props) {
           {props.showFeedback && !props.asking && <FeedbackButtons onResolved={props.onResolved} onHuman={props.onHuman} />}
           {props.offerStatus !== "locked" && (
             <section className="offer-card">
+              <img src={bannerForOffer(props.offer)} alt={`Promoción recomendada: ${props.offer.name}`} style={offerBannerStyle} />
               <small>OFERTA CONTEXTUAL</small><h3>{props.offer.name}</h3><p>S/{props.offer.price.toFixed(2)} · {props.offer.duration}</p><span>{props.offer.reason}</span>
               {props.offerStatus === "available" && <div><Button onClick={props.onAcceptOffer}>Simular contratación</Button><Button variant="ghost" onClick={props.onDeclineOffer}>No gracias</Button></div>}
               {props.offerStatus === "accepted" && <b>✓ Contratación simulada; no se realizó ningún cobro.</b>}
