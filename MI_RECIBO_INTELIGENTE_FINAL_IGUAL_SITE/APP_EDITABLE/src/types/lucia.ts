@@ -4,7 +4,7 @@ export type Resolution = "pending" | "resolved" | "needs-help";
 export type Intent =
   | "increase" | "breakdown" | "usage" | "categories" | "plan" | "receipts" | "receipt_month"
   | "payment" | "proration" | "reconnection" | "discount" | "benefits" | "offer"
-  | "human" | "greeting" | "thanks" | "followup" | "unknown";
+  | "human" | "greeting" | "thanks" | "resolved" | "followup" | "unknown";
 
 export type ChatMessage = {
   role: "user" | "bot";
